@@ -6,19 +6,20 @@ import Eachproduct from './components/Eachproduct';
 import ProductCard from './components/ProductCard';
 import Pagination from './components/Pagination';
 
-const apiPath = "https://ec-course-api.hexschool.io/v2/api/";
+const apiBase = import.meta.env.VITE_API_BASE;
+const apiPath = import.meta.env.VITE_API_PATH;
 
-const BPtoken = document.cookie
-  .replace(/(?:(?:^|.*;\s*)BPToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
 
 
 function App() {
 
+  const BPtoken = document.cookie
+    .replace(/(?:(?:^|.*;\s*)BPToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+
   const [SelectProduct, setSelectProduct] = useState(null);
   const [pagination, setPagination] = useState();
-
-
-
   const [Products, setProducts] = useState();
   const [showAddModal, setShowAddModal] = useState(false);
   const [addProduct, setAddProduct] = useState({
@@ -74,97 +75,88 @@ function App() {
       ...addProduct,
       imagesUrl: newImages
     });
-    return (
-      <>
-      </>
-    )
   };
 
 
   const getData = async () => {
-    axios.get(`${apiPath}hahablackpink/admin/products`, {
-      headers: {
-        Authorization: BPtoken
-      }
-    })
-      .then((res) => {
-        console.log("取得資料:", res);
-        setProducts(res.data.products);
-        setPagination(res.data.pagination);
-
-      })
-      .catch((error) => {
-        console.error("取得資料時發生錯誤:", error);
+    try {
+      const res = await axios.get(`${apiBase}v2/api/${apiPath}/admin/products`, {
+        headers: {
+          Authorization: BPtoken
+        }
       });
+      console.log("取得資料:", res.data);
+      setProducts(res.data.products);
+
+    } catch (error) {
+      console.error("取得資料時發生錯誤:", error.response
+        .data);
+    }
+
   };
 
   const goPage = async (pageLocation) => {
-    axios.get(`${apiPath}hahablackpink/admin/products?page=${pageLocation}`, {
-      headers: {
-        Authorization: BPtoken
-      }
-    })
-      .then((res) => {
-        console.log("前往頁面:", res);
-        setProducts(res.data.products);
-        setPagination(res.data.pagination);
-      })
-      .catch((error) => {
-        console.error("前往頁面時發生錯誤:", error);
+
+    try {
+      const res = await axios.get(`${apiPath}hahablackpink/admin/products?page=${pageLocation}`, {
+        headers: {
+          Authorization: BPtoken
+        }
       });
+      console.log("前往頁面:", res);
+      setProducts(res.data.products);
+      setPagination(res.data.pagination);
+    } catch (error) {
+      console.error("前往頁面時發生錯誤:", error);
+    }
+
   };
 
   const sentProduct = async () => {
-    axios.post(`${apiPath}hahablackpink/admin/product`, { data: addProduct }, {
-      headers: {
-        Authorization: BPtoken
-      }
-    })
-      .then((res) => {
-        console.log("新增資料:", res.data);
-        setShowAddModal(false); // 關閉視窗
-
-        getData(); // 重新整理列表
-      })
-      .catch((error) => {
-        console.error("新增資料時發生錯誤:", error);
+    try {
+      const res = await axios.post(`${apiBase}v2/api/${apiPath}/admin/product`, { data: addProduct }, {
+        headers: {
+          Authorization: BPtoken
+        }
       });
+      console.log("新增資料:", res.data.message);
+      setShowAddModal(false); // 關閉視窗
+      getData(); // 重新整理列表
 
+    } catch (error) {
+      console.error("新增資料時發生錯誤:", error.response);
+    }
   };
 
   const deleteProduct = async (id) => {
-    axios.delete(`${apiPath}hahablackpink/admin/product/${id}`, {
-      headers: {
-        Authorization: BPtoken
-      }
-    })
-      .then((res) => {
-        console.log("刪除資料:", res);
-        setSelectProduct(null); // 關閉視窗
-        getData(); // 重新整理列表
-      })
-      .catch((error) => {
-        console.error("刪除資料時發生錯誤:", error);
+    try {
+      const res = await axios.delete(`${apiBase}v2/api/${apiPath}/admin/product/${id}`, {
+        headers: {
+          Authorization: BPtoken
+        }
       });
+      console.log("刪除資料:", res.data.message);
+      setSelectProduct(null); // 關閉視窗
+      getData(); // 重新整理列表
 
+    } catch (error) {
+      console.error("刪除資料時發生錯誤:", error.response);
+    }
   };
 
   const revisedProduct = async (id, revisedModal) => {
-    axios.put(`${apiPath}hahablackpink/admin/product/${id}`, { data: revisedModal }, {
-      headers: {
-        Authorization: BPtoken
-      }
-    })
-      .then((res) => {
-        console.log("修改資料:", res.data);
-        setSelectProduct(null)
-        // setShowRevisedModal(false); // 關閉視窗
-        getData(); // 重新整理列表
-      })
-      .catch((error) => {
-        console.error("修改資料時發生錯誤:", error);
+    try {
+      const res = await axios.put(`${apiBase}v2/api/${apiPath}/admin/product/${id}`, { data: revisedModal }, {
+        headers: {
+          Authorization: BPtoken
+        }
       });
-
+      console.log("修改資料:", res.data);
+      setSelectProduct(null)
+      getData(); // 重新整理列表
+    } catch (error) {
+      console.error("修改資料時發生錯誤:", error.response);
+    }
   };
 
 
