@@ -71,39 +71,11 @@ function Main() {
       } catch (error) {
         setIsAuth(false);
       }
-    }
+    };
 
     checkLogin();
 
-
   }, [])
-  // function Main() {
-  //   const apiPath = "https://ec-course-api.hexschool.io/";
-  //   const [isAuth, setIsAuth] = useState(false);
-
-
-  //   useEffect(() => {
-  //     const BPCookie = document.cookie.replace(
-  //       /(?:(?:^|.*;\s*)BPToken\s*\=\s*([^;]*).*$)|^.*$/,
-  //       "$1",
-  //     );
-  //     if (!BPCookie) {
-  //       setIsAuth(false);
-  //       return;
-  //     }
-
-  //     axios.defaults.headers.common['Authorization'] = BPCookie;
-
-  //     axios.post(`${apiPath}v2/api/user/check`)
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         setIsAuth(true);
-  //       })
-  //       .catch((error) => {
-  //         setIsAuth(false);
-  //       })
-
-  //   }, [])
 
   return (
     <>
