@@ -87,6 +87,7 @@ function App() {
       });
       console.log("取得資料:", res.data);
       setProducts(res.data.products);
+      setPagination(res.data.pagination);
 
     } catch (error) {
       console.error("取得資料時發生錯誤:", error.response
@@ -106,6 +107,7 @@ function App() {
       console.log("前往頁面:", res);
       setProducts(res.data.products);
       setPagination(res.data.pagination);
+
     } catch (error) {
       console.error("前往頁面時發生錯誤:", error);
     }
