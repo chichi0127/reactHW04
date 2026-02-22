@@ -99,7 +99,7 @@ function App() {
   const goPage = async (pageLocation) => {
 
     try {
-      const res = await axios.get(`${apiPath}hahablackpink/admin/products?page=${pageLocation}`, {
+      const res = await axios.get(`${apiBase}v2/api/${apiPath}/admin/products?page=${pageLocation}`, {
         headers: {
           Authorization: BPtoken
         }
